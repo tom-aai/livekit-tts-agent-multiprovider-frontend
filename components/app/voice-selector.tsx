@@ -44,7 +44,12 @@ export function VoiceSelector({
           <div key={group.provider}>
             {index > 0 && <SelectSeparator />}
             <SelectGroup>
-              <SelectLabel>{group.label}</SelectLabel>
+              <SelectLabel>
+                {group.label}
+                {group.model && (
+                  <span className="text-muted-foreground ml-1.5 font-normal">{group.model}</span>
+                )}
+              </SelectLabel>
               {group.voices.map((voice) => (
                 <SelectItem key={voiceKey(voice)} value={voiceKey(voice)}>
                   <span className="font-medium">{voice.label}</span>

@@ -25,6 +25,8 @@ export interface VoiceGroup {
   provider: VoiceProvider;
   /** Display name for the provider group. */
   label: string;
+  /** TTS model name shown next to the provider (omitted when there is no distinct model). */
+  model?: string;
   voices: VoiceOption[];
 }
 
@@ -32,6 +34,7 @@ export const VOICE_GROUPS: VoiceGroup[] = [
   {
     provider: 'cartesia',
     label: 'Cartesia',
+    model: 'sonic-3.6',
     voices: [
       {
         provider: 'cartesia',
@@ -62,6 +65,7 @@ export const VOICE_GROUPS: VoiceGroup[] = [
   {
     provider: 'rime',
     label: 'Rime',
+    model: 'coda',
     voices: [
       {
         provider: 'rime',
@@ -92,6 +96,7 @@ export const VOICE_GROUPS: VoiceGroup[] = [
   {
     provider: 'fish',
     label: 'Fish Audio',
+    model: 'drama-3',
     voices: [
       {
         provider: 'fish',
@@ -122,6 +127,7 @@ export const VOICE_GROUPS: VoiceGroup[] = [
   {
     provider: 'inworld',
     label: 'Inworld',
+    model: 'inworld-tts-2',
     voices: [
       {
         provider: 'inworld',
@@ -152,6 +158,7 @@ export const VOICE_GROUPS: VoiceGroup[] = [
   {
     provider: 'gradium',
     label: 'Gradium',
+    model: 'default',
     voices: [
       {
         provider: 'gradium',
