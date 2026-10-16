@@ -1,4 +1,6 @@
+import { VoiceSelector } from '@/components/app/voice-selector';
 import { Button } from '@/components/ui/button';
+import type { VoiceOption } from '@/lib/voices';
 
 function WelcomeImage() {
   return (
@@ -21,11 +23,15 @@ function WelcomeImage() {
 interface WelcomeViewProps {
   startButtonText: string;
   onStartCall: () => void;
+  selectedVoice: VoiceOption | null;
+  onVoiceChange: (voice: VoiceOption) => void;
 }
 
 export const WelcomeView = ({
   startButtonText,
   onStartCall,
+  selectedVoice,
+  onVoiceChange,
   ref,
 }: React.ComponentProps<'div'> & WelcomeViewProps) => {
   return (
@@ -37,10 +43,21 @@ export const WelcomeView = ({
           Chat live with your voice AI agent
         </p>
 
+        <p className="text-muted-foreground max-w-prose pt-1 text-sm leading-5">
+          Pick a voice to get started
+        </p>
+
+        <VoiceSelector
+          selectedVoice={selectedVoice}
+          onVoiceChange={onVoiceChange}
+          className="mt-6 w-64"
+        />
+
         <Button
           size="lg"
           onClick={onStartCall}
-          className="mt-6 w-64 rounded-full font-mono text-xs font-bold tracking-wider uppercase"
+          disabled={!selectedVoice}
+          className="mt-3 w-64 rounded-full font-mono text-xs font-bold tracking-wider uppercase"
         >
           {startButtonText}
         </Button>

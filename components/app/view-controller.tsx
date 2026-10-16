@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useAgent, useSessionContext } from '@livekit/components-react';
 import { AgentSessionView_01 } from '@/components/agents-ui/blocks/agent-session-view-01';
 import { WelcomeView } from '@/components/app/welcome-view';
+import type { VoiceOption } from '@/lib/voices';
 
 const MotionWelcomeView = motion.create(WelcomeView);
 const MotionSessionView = motion.create(AgentSessionView_01);
@@ -29,9 +30,15 @@ const VIEW_MOTION_PROPS = {
 
 interface ViewControllerProps {
   isVideoInputSupported: boolean;
+  selectedVoice: VoiceOption | null;
+  onVoiceChange: (voice: VoiceOption) => void;
 }
 
-export function ViewController({ isVideoInputSupported }: ViewControllerProps) {
+export function ViewController({
+  isVideoInputSupported,
+  selectedVoice,
+  onVoiceChange,
+}: ViewControllerProps) {
   const { isConnected, start } = useSessionContext();
   const agent = useAgent();
   const { resolvedTheme } = useTheme();
@@ -45,6 +52,8 @@ export function ViewController({ isVideoInputSupported }: ViewControllerProps) {
           {...VIEW_MOTION_PROPS}
           startButtonText="Start call"
           onStartCall={start}
+          selectedVoice={selectedVoice}
+          onVoiceChange={onVoiceChange}
         />
       )}
       {/* Session view */}

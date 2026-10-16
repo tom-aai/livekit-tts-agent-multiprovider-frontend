@@ -1,0 +1,159 @@
+// Voice catalog for the pre-call voice picker.
+//
+// The LiveKit Inference providers (Cartesia, Rime, Fish Audio) are reached through
+// `inference.TTS` in the agent, so their `id` is the full LiveKit model descriptor
+// in "provider/model:voice" format (see https://docs.livekit.io/agents/models/tts/).
+// AssemblyAI voices are not available through LiveKit Inference, so they go through the
+// local `assemblyai_tts` plugin and their `id` is just the preset voice name.
+//
+// The agent receives the selection as JSON `{ provider, voice }` in its job metadata and
+// builds the matching TTS. See `src/agent.py` in the companion `livekit-tts-agent` project.
+
+export type VoiceProvider = 'cartesia' | 'rime' | 'fish' | 'assemblyai';
+
+export interface VoiceOption {
+  /** Agent-facing value: a LiveKit model descriptor, or an AssemblyAI voice name. */
+  id: string;
+  /** Display name shown in the picker. */
+  label: string;
+  /** Short description of the voice. */
+  description?: string;
+  provider: VoiceProvider;
+}
+
+export interface VoiceGroup {
+  provider: VoiceProvider;
+  /** Display name for the provider group. */
+  label: string;
+  voices: VoiceOption[];
+}
+
+export const VOICE_GROUPS: VoiceGroup[] = [
+  {
+    provider: 'cartesia',
+    label: 'Cartesia',
+    voices: [
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3:a167e0f3-df7e-4d52-a9c3-f949145efdab',
+        label: 'Blake',
+        description: 'Energetic American male',
+      },
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3:9626c31c-bec5-4cca-baa8-f8ba9e84c8bc',
+        label: 'Jacqueline',
+        description: 'Confident, young American female',
+      },
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3:f31cc6a7-c1e8-4764-980c-60a361443dd1',
+        label: 'Robyn',
+        description: 'Neutral, mature Australian female',
+      },
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3:5c5ad5e7-1020-476b-8b91-fdcbe9cc313c',
+        label: 'Daniela',
+        description: 'Calm, trusting Mexican female',
+      },
+    ],
+  },
+  {
+    provider: 'rime',
+    label: 'Rime',
+    voices: [
+      {
+        provider: 'rime',
+        id: 'rime/coda:astra',
+        label: 'Astra',
+        description: 'Chipper, upbeat American female',
+      },
+      {
+        provider: 'rime',
+        id: 'rime/coda:celeste',
+        label: 'Celeste',
+        description: 'Chill Gen-Z American female',
+      },
+      {
+        provider: 'rime',
+        id: 'rime/coda:luna',
+        label: 'Luna',
+        description: 'Chill but excitable American female',
+      },
+      {
+        provider: 'rime',
+        id: 'rime/coda:lyra',
+        label: 'Lyra',
+        description: 'Warm, natural American female',
+      },
+    ],
+  },
+  {
+    provider: 'fish',
+    label: 'Fish Audio',
+    voices: [
+      {
+        provider: 'fish',
+        id: 'fishaudio/s2.1-pro:bf322df2096a46f18c579d0baa36f41d',
+        label: 'Adrian',
+        description: 'Friendly, casual American male',
+      },
+      {
+        provider: 'fish',
+        id: 'fishaudio/s2.1-pro:9a9cf47702da476aa4629e2506d4a857',
+        label: 'Hannah',
+        description: 'A conversational specialist',
+      },
+      {
+        provider: 'fish',
+        id: 'fishaudio/s2.1-pro:79d0bd3e4e5444b18f7b6d89b5927bf1',
+        label: 'Jordan',
+        description: 'A motivational speaker',
+      },
+      {
+        provider: 'fish',
+        id: 'fishaudio/s2.1-pro:e3cd384158934cc9a01029cd7d278634',
+        label: 'Laura',
+        description: 'A confident female narrator',
+      },
+    ],
+  },
+  {
+    provider: 'assemblyai',
+    label: 'AssemblyAI',
+    // All AssemblyAI voices are English. These go through the local assemblyai_tts plugin.
+    voices: [
+      { provider: 'assemblyai', id: 'alba', label: 'Alba' },
+      { provider: 'assemblyai', id: 'anna', label: 'Anna' },
+      { provider: 'assemblyai', id: 'charles', label: 'Charles' },
+      { provider: 'assemblyai', id: 'eve', label: 'Eve' },
+      { provider: 'assemblyai', id: 'george', label: 'George' },
+      { provider: 'assemblyai', id: 'jane', label: 'Jane', description: 'Default' },
+      { provider: 'assemblyai', id: 'jean', label: 'Jean' },
+      { provider: 'assemblyai', id: 'mary', label: 'Mary' },
+      { provider: 'assemblyai', id: 'michael', label: 'Michael' },
+      { provider: 'assemblyai', id: 'paul', label: 'Paul' },
+      { provider: 'assemblyai', id: 'vera', label: 'Vera' },
+    ],
+  },
+];
+
+/** A stable, collision-free key for use as a `<Select>` item value. */
+export function voiceKey(voice: Pick<VoiceOption, 'provider' | 'id'>): string {
+  return `${voice.provider}__${voice.id}`;
+}
+
+const VOICES_BY_KEY = new Map<string, VoiceOption>(
+  VOICE_GROUPS.flatMap((group) => group.voices.map((voice) => [voiceKey(voice), voice]))
+);
+
+/** Look up a voice by the key produced by `voiceKey`. */
+export function getVoiceByKey(key: string): VoiceOption | undefined {
+  return VOICES_BY_KEY.get(key);
+}
+
+/** The JSON payload the agent reads from its job metadata to configure the TTS. */
+export function voiceToAgentMetadata(voice: VoiceOption): string {
+  return JSON.stringify({ provider: voice.provider, voice: voice.id });
+}

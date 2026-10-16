@@ -1,0 +1,45 @@
+# Render Blueprint for the LiveKit agent web frontend (Next.js).
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Deploy: in the Render dashboard, New > Blueprint, point it at this repo.
+# If this repo contains both the agent and the frontend, set the service's
+# Root Directory to "agent-starter-react" in the dashboard, or add
+#   rootDir: agent-starter-react
+# under the service below.
+#
+# After the first deploy, fill in the secret env vars (LIVEKIT_URL,
+# LIVEKIT_API_KEY, LIVEKIT_API_SECRET) in the Render dashboard — they are
+# marked `sync: false` so they are never committed to the repo.
+
+services:
+  - type: web
+    name: livekit-tts-frontend
+    runtime: node
+    plan: starter
+    region: virginia
+    branch: main
+    autoDeploy: true
+    # Corepack activates the pinned pnpm version from package.json's
+    # "packageManager" field before installing.
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /
+    envVars:
+      # Match the Node version pinned in package.json ("engines": "24.x").
+      - key: NODE_VERSION
+        value: "24"
+      # The agent registers as "tts-agent" (see the agent's rtc_session decorator),
+      # so the frontend must use explicit dispatch with this name.
+      - key: AGENT_NAME
+        value: tts-agent
+      # LiveKit Cloud project credentials — set these in the Render dashboard.
+      - key: LIVEKIT_URL
+        sync: false
+      - key: LIVEKIT_API_KEY
+        sync: false
+      - key: LIVEKIT_API_SECRET
+        sync: false
+      # Optional: use a LiveKit development token server instead of the built-in
+      # token endpoint. Set in the dashboard if you use it; otherwise leave unset.
+      - key: LIVEKIT_TOKEN_SERVER_ID
+        sync: false
