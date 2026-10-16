@@ -1,15 +1,15 @@
 // Voice catalog for the pre-call voice picker.
 //
-// The LiveKit Inference providers (Cartesia, Rime, Fish Audio) are reached through
-// `inference.TTS` in the agent, so their `id` is the full LiveKit model descriptor
-// in "provider/model:voice" format (see https://docs.livekit.io/agents/models/tts/).
+// The LiveKit Inference providers (Cartesia, Rime, Fish Audio, Inworld, Gradium) are
+// reached through `inference.TTS` in the agent, so their `id` is the full LiveKit model
+// descriptor in "provider/model:voice" format (see https://docs.livekit.io/agents/models/tts/).
 // AssemblyAI voices are not available through LiveKit Inference, so they go through the
 // local `assemblyai_tts` plugin and their `id` is just the preset voice name.
 //
 // The agent receives the selection as JSON `{ provider, voice }` in its job metadata and
 // builds the matching TTS. See `src/agent.py` in the companion `livekit-tts-agent` project.
 
-export type VoiceProvider = 'cartesia' | 'rime' | 'fish' | 'assemblyai';
+export type VoiceProvider = 'cartesia' | 'rime' | 'fish' | 'inworld' | 'gradium' | 'assemblyai';
 
 export interface VoiceOption {
   /** Agent-facing value: a LiveKit model descriptor, or an AssemblyAI voice name. */
@@ -35,25 +35,25 @@ export const VOICE_GROUPS: VoiceGroup[] = [
     voices: [
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3:a167e0f3-df7e-4d52-a9c3-f949145efdab',
+        id: 'cartesia/sonic-3.6:a167e0f3-df7e-4d52-a9c3-f949145efdab',
         label: 'Blake',
         description: 'Energetic American male',
       },
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3:9626c31c-bec5-4cca-baa8-f8ba9e84c8bc',
+        id: 'cartesia/sonic-3.6:9626c31c-bec5-4cca-baa8-f8ba9e84c8bc',
         label: 'Jacqueline',
         description: 'Confident, young American female',
       },
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3:f31cc6a7-c1e8-4764-980c-60a361443dd1',
+        id: 'cartesia/sonic-3.6:f31cc6a7-c1e8-4764-980c-60a361443dd1',
         label: 'Robyn',
         description: 'Neutral, mature Australian female',
       },
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3:5c5ad5e7-1020-476b-8b91-fdcbe9cc313c',
+        id: 'cartesia/sonic-3.6:5c5ad5e7-1020-476b-8b91-fdcbe9cc313c',
         label: 'Daniela',
         description: 'Calm, trusting Mexican female',
       },
@@ -95,27 +95,87 @@ export const VOICE_GROUPS: VoiceGroup[] = [
     voices: [
       {
         provider: 'fish',
-        id: 'fishaudio/s2.1-pro:bf322df2096a46f18c579d0baa36f41d',
+        id: 'fishaudio/drama-3:bf322df2096a46f18c579d0baa36f41d',
         label: 'Adrian',
         description: 'Friendly, casual American male',
       },
       {
         provider: 'fish',
-        id: 'fishaudio/s2.1-pro:9a9cf47702da476aa4629e2506d4a857',
+        id: 'fishaudio/drama-3:9a9cf47702da476aa4629e2506d4a857',
         label: 'Hannah',
         description: 'A conversational specialist',
       },
       {
         provider: 'fish',
-        id: 'fishaudio/s2.1-pro:79d0bd3e4e5444b18f7b6d89b5927bf1',
+        id: 'fishaudio/drama-3:79d0bd3e4e5444b18f7b6d89b5927bf1',
         label: 'Jordan',
         description: 'A motivational speaker',
       },
       {
         provider: 'fish',
-        id: 'fishaudio/s2.1-pro:e3cd384158934cc9a01029cd7d278634',
+        id: 'fishaudio/drama-3:e3cd384158934cc9a01029cd7d278634',
         label: 'Laura',
         description: 'A confident female narrator',
+      },
+    ],
+  },
+  {
+    provider: 'inworld',
+    label: 'Inworld',
+    voices: [
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Ashley',
+        label: 'Ashley',
+        description: 'Warm, natural American female',
+      },
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Edward',
+        label: 'Edward',
+        description: 'Fast-talking, emphatic American male',
+      },
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Olivia',
+        label: 'Olivia',
+        description: 'Upbeat, friendly British female',
+      },
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Diego',
+        label: 'Diego',
+        description: 'Soothing, gentle Mexican male',
+      },
+    ],
+  },
+  {
+    provider: 'gradium',
+    label: 'Gradium',
+    voices: [
+      {
+        provider: 'gradium',
+        id: 'gradium/default:4SZHfMpw-p46Ywgs',
+        label: 'Harper',
+        description: 'Modern, confident and friendly American female',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:6MFfc37kq0sBjBjy',
+        label: 'Sterling',
+        description: 'Warm, energetic American male with theatrical flair',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:YhIHaAfQ0cQPDV9R',
+        label: 'Solène',
+        description: 'Bright, warm and enthusiastic French female',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:aBNlTApBeOlVKa23',
+        label: 'Lorena',
+        description: 'Warm and lively young German female',
       },
     ],
   },
