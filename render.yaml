@@ -19,15 +19,21 @@ services:
     region: virginia
     branch: main
     autoDeploy: true
-    # Corepack activates the pinned pnpm version from package.json's
-    # "packageManager" field before installing.
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
-    startCommand: pnpm start
+    # Run pnpm through Corepack's binary proxy, which uses the version pinned in
+    # package.json's "packageManager" field from Corepack's own cache. We avoid
+    # `corepack enable` because it rewrites the global pnpm shim in /usr/bin,
+    # which fails with EROFS on Render's read-only system path.
+    buildCommand: corepack pnpm install --frozen-lockfile && corepack pnpm build
+    startCommand: corepack pnpm start
     healthCheckPath: /
     envVars:
       # Match the Node version pinned in package.json ("engines": "24.x").
       - key: NODE_VERSION
         value: "24"
+      # Let Corepack download the pinned pnpm version without an interactive
+      # prompt (the build is non-interactive).
+      - key: COREPACK_ENABLE_DOWNLOAD_PROMPT
+        value: "0"
       # The agent registers as "tts-agent" (see the agent's rtc_session decorator),
       # so the frontend must use explicit dispatch with this name.
       - key: AGENT_NAME
