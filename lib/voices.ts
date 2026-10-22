@@ -205,10 +205,25 @@ export const VOICE_GROUPS: VoiceGroup[] = [
       // Accented library voices. The agent passes `id` straight through as the
       // AssemblyAI voice_id, so these use the "aai-" slug, not the UUID.
       { provider: 'assemblyai', id: 'aai-isaiah-2', label: 'Isaiah', description: 'American male' },
-      { provider: 'assemblyai', id: 'aai-eric-2', label: 'Eric (US)', description: 'American male' },
+      {
+        provider: 'assemblyai',
+        id: 'aai-eric-2',
+        label: 'Eric (US)',
+        description: 'American male',
+      },
       { provider: 'assemblyai', id: 'aai-audrey', label: 'Audrey', description: 'American female' },
-      { provider: 'assemblyai', id: 'aai-emilia-2', label: 'Emilia', description: 'American female' },
-      { provider: 'assemblyai', id: 'aai-cameron-2', label: 'Cameron', description: 'Scottish male' },
+      {
+        provider: 'assemblyai',
+        id: 'aai-emilia-2',
+        label: 'Emilia',
+        description: 'American female',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-cameron-2',
+        label: 'Cameron',
+        description: 'Scottish male',
+      },
       { provider: 'assemblyai', id: 'aai-eric-6', label: 'Eric (UK)', description: 'British male' },
       { provider: 'assemblyai', id: 'aai-nancy', label: 'Nancy', description: 'British female' },
       { provider: 'assemblyai', id: 'aai-carrie', label: 'Carrie', description: 'British female' },
