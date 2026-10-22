@@ -189,44 +189,130 @@ export const VOICE_GROUPS: VoiceGroup[] = [
   {
     provider: 'assemblyai',
     label: 'AssemblyAI',
-    // All AssemblyAI voices are English. These go through the local assemblyai_tts plugin.
+    // Multilingual voice library. These go through the local assemblyai_tts plugin, and the
+    // agent passes `id` straight through as the AssemblyAI voice_id, so each uses the "aai-" slug.
     voices: [
-      { provider: 'assemblyai', id: 'alba', label: 'Alba' },
-      { provider: 'assemblyai', id: 'anna', label: 'Anna' },
-      { provider: 'assemblyai', id: 'charles', label: 'Charles' },
-      { provider: 'assemblyai', id: 'eve', label: 'Eve' },
-      { provider: 'assemblyai', id: 'george', label: 'George' },
-      { provider: 'assemblyai', id: 'jane', label: 'Jane', description: 'Default' },
-      { provider: 'assemblyai', id: 'jean', label: 'Jean' },
-      { provider: 'assemblyai', id: 'mary', label: 'Mary' },
-      { provider: 'assemblyai', id: 'michael', label: 'Michael' },
-      { provider: 'assemblyai', id: 'paul', label: 'Paul' },
-      { provider: 'assemblyai', id: 'vera', label: 'Vera' },
-      // Accented library voices. The agent passes `id` straight through as the
-      // AssemblyAI voice_id, so these use the "aai-" slug, not the UUID.
-      { provider: 'assemblyai', id: 'aai-isaiah-2', label: 'Isaiah', description: 'American male' },
       {
         provider: 'assemblyai',
-        id: 'aai-eric-2',
-        label: 'Eric (US)',
-        description: 'American male',
-      },
-      { provider: 'assemblyai', id: 'aai-audrey', label: 'Audrey', description: 'American female' },
-      {
-        provider: 'assemblyai',
-        id: 'aai-emilia-2',
-        label: 'Emilia',
-        description: 'American female',
+        id: 'aai-isadora',
+        label: 'Isadora',
+        description: 'A young woman speaking Portuguese with a fairly warm tone.',
       },
       {
         provider: 'assemblyai',
-        id: 'aai-cameron-2',
-        label: 'Cameron',
-        description: 'Scottish male',
+        id: 'aai-cloyd',
+        label: 'Cloyd',
+        description:
+          'An older man with a high-pitched, fast-paced, energetic delivery in British English.',
       },
-      { provider: 'assemblyai', id: 'aai-eric-6', label: 'Eric (UK)', description: 'British male' },
-      { provider: 'assemblyai', id: 'aai-nancy', label: 'Nancy', description: 'British female' },
-      { provider: 'assemblyai', id: 'aai-carrie', label: 'Carrie', description: 'British female' },
+      {
+        provider: 'assemblyai',
+        id: 'aai-kyla',
+        label: 'Kyla',
+        description: 'A young woman speaking American English at a fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-steven',
+        label: 'Steven',
+        description: 'A middle-aged man speaking Australian English with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-april',
+        label: 'April',
+        description: 'A young woman speaking American English at a fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-benton',
+        label: 'Benton',
+        description:
+          'An older American man with an energetic delivery and expressive intonation, featuring a nasal quality.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-franciscoborja',
+        label: 'Francisco',
+        description:
+          'A middle-aged man speaking Spanish from Spain with an energetic delivery and soft-spoken, warm, rich tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-eira',
+        label: 'Eira',
+        description: 'Young woman speaking Mexican Spanish with a high-pitched voice.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-donatien',
+        label: 'Donatien',
+        description:
+          'A middle-aged man with a high-pitched, soft-spoken voice and expressive intonation.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-karin',
+        label: 'Karin',
+        description:
+          'A middle-aged woman speaking German with energetic delivery, fast-paced and expressive intonation.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-amerigo',
+        label: 'Amerigo',
+        description: 'An energetic, high-pitched, expressive Italian male voice with dynamic intonation.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-titus',
+        label: 'Titus',
+        description: 'A young man with a deep, low-pitched voice speaking American English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-ewald',
+        label: 'Ewald',
+        description: 'A middle-aged man speaking American English at a fairly fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-audrey',
+        label: 'Audrey',
+        description: 'A middle-aged woman with an even, steady intonation speaks American English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-violet',
+        label: 'Violet',
+        description:
+          'A young woman with a balanced, natural, easy-to-listen-to voice speaking American English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-troy',
+        label: 'Troy',
+        description:
+          'A young man with a soft-spoken, deep, low-pitched voice and expressive intonation of Scottish English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-nash',
+        label: 'Nash',
+        description: 'A middle-aged man speaking British English with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-nancy',
+        label: 'Nancy',
+        description: 'A middle-aged woman speaking British English with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-carrie',
+        label: 'Carrie',
+        description: 'A middle-aged woman with a soft-spoken delivery in British English.',
+      },
     ],
   },
 ];
