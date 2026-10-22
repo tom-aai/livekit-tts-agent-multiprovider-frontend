@@ -314,6 +314,49 @@ export const VOICE_GROUPS: VoiceGroup[] = [
         label: 'Carrie',
         description: 'A middle-aged woman with a soft-spoken delivery in British English.',
       },
+      {
+        provider: 'assemblyai',
+        id: 'aai-magdalena',
+        label: 'Magdelena',
+        description: 'A young woman with a deep, low-pitched voice speaking German.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-jorg',
+        label: 'Jörg',
+        description: 'A middle-aged man speaking German with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-gunther',
+        label: 'Gunther',
+        description:
+          'A middle-aged man speaking German with expressive intonation and a soft-spoken delivery.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-constanza',
+        label: 'Constanza',
+        description: 'A young woman speaking Mexican Spanish with an even, steady intonation.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-malvina',
+        label: 'Malvina',
+        description: 'A soft-spoken middle-aged woman speaking Mexican Spanish.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-oriol',
+        label: 'Oriol',
+        description: 'A middle-aged man speaking Mexican Spanish at a fairly fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-antonioluis',
+        label: 'Antonio Luis',
+        description: 'A deep, low-pitched voice of a middle-aged man speaking Mexican Spanish.',
+      },
     ],
   },
 ];
