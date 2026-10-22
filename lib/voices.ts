@@ -261,7 +261,8 @@ export const VOICE_GROUPS: VoiceGroup[] = [
         provider: 'assemblyai',
         id: 'aai-amerigo',
         label: 'Amerigo',
-        description: 'An energetic, high-pitched, expressive Italian male voice with dynamic intonation.',
+        description:
+          'An energetic, high-pitched, expressive Italian male voice with dynamic intonation.',
       },
       {
         provider: 'assemblyai',
