@@ -194,54 +194,27 @@ export const VOICE_GROUPS: VoiceGroup[] = [
     voices: [
       {
         provider: 'assemblyai',
-        id: 'aai-isadora',
-        label: 'Isadora',
-        description: 'A young woman speaking Portuguese with a fairly warm tone.',
+        id: 'aai-antonioluis',
+        label: 'Antonio Luis',
+        description: 'A deep, low-pitched voice of a middle-aged man speaking Mexican Spanish.',
       },
       {
         provider: 'assemblyai',
-        id: 'aai-cloyd',
-        label: 'Cloyd',
-        description:
-          'An older man with a high-pitched, fast-paced, energetic delivery in British English.',
+        id: 'aai-audrey',
+        label: 'Audrey',
+        description: 'A middle-aged woman with an even, steady intonation speaks American English.',
       },
       {
         provider: 'assemblyai',
-        id: 'aai-kyla',
-        label: 'Kyla',
-        description: 'A young woman speaking American English at a fast pace.',
+        id: 'aai-carrie',
+        label: 'Carrie',
+        description: 'A middle-aged woman with a soft-spoken delivery in British English.',
       },
       {
         provider: 'assemblyai',
-        id: 'aai-steven',
-        label: 'Steven',
-        description: 'A middle-aged man speaking Australian English with a fairly even tone.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-april',
-        label: 'April',
-        description: 'A young woman speaking American English at a fast pace.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-benton',
-        label: 'Benton',
-        description:
-          'An older American man with an energetic delivery and expressive intonation, featuring a nasal quality.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-franciscoborja',
-        label: 'Francisco',
-        description:
-          'A middle-aged man speaking Spanish from Spain with an energetic delivery and soft-spoken, warm, rich tone.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-eira',
-        label: 'Eira',
-        description: 'Young woman speaking Mexican Spanish with a high-pitched voice.',
+        id: 'aai-constanza',
+        label: 'Constanza',
+        description: 'A young woman speaking Mexican Spanish with an even, steady intonation.',
       },
       {
         provider: 'assemblyai',
@@ -252,79 +225,16 @@ export const VOICE_GROUPS: VoiceGroup[] = [
       },
       {
         provider: 'assemblyai',
-        id: 'aai-karin',
-        label: 'Karin',
+        id: 'aai-ernest',
+        label: 'Ernest',
         description:
-          'A middle-aged woman speaking German with energetic delivery, fast-paced and expressive intonation.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-amerigo',
-        label: 'Amerigo',
-        description:
-          'An energetic, high-pitched, expressive Italian male voice with dynamic intonation.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-titus',
-        label: 'Titus',
-        description: 'A young man with a deep, low-pitched voice speaking American English.',
+          'A middle-aged man speaking fast-paced American English with a high-pitched voice.',
       },
       {
         provider: 'assemblyai',
         id: 'aai-ewald',
         label: 'Ewald',
         description: 'A middle-aged man speaking American English at a fairly fast pace.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-audrey',
-        label: 'Audrey',
-        description: 'A middle-aged woman with an even, steady intonation speaks American English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-violet',
-        label: 'Violet',
-        description:
-          'A young woman with a balanced, natural, easy-to-listen-to voice speaking American English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-troy',
-        label: 'Troy',
-        description:
-          'A young man with a soft-spoken, deep, low-pitched voice and expressive intonation of Scottish English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-nash',
-        label: 'Nash',
-        description: 'A middle-aged man speaking British English with a fairly even tone.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-nancy',
-        label: 'Nancy',
-        description: 'A middle-aged woman speaking British English with a fairly even tone.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-carrie',
-        label: 'Carrie',
-        description: 'A middle-aged woman with a soft-spoken delivery in British English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-magdalena',
-        label: 'Magdelena',
-        description: 'A young woman with a deep, low-pitched voice speaking German.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-jorg',
-        label: 'Jörg',
-        description: 'A middle-aged man speaking German with a fairly even tone.',
       },
       {
         provider: 'assemblyai',
@@ -335,9 +245,27 @@ export const VOICE_GROUPS: VoiceGroup[] = [
       },
       {
         provider: 'assemblyai',
-        id: 'aai-constanza',
-        label: 'Constanza',
-        description: 'A young woman speaking Mexican Spanish with an even, steady intonation.',
+        id: 'aai-hailey',
+        label: 'Hailey',
+        description: 'A young woman speaking American English at a fairly fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-jorg',
+        label: 'Jörg',
+        description: 'A middle-aged man speaking German with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-kyla',
+        label: 'Kyla',
+        description: 'A young woman speaking American English at a fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-magdalena',
+        label: 'Magdelena',
+        description: 'A young woman with a deep, low-pitched voice speaking German.',
       },
       {
         provider: 'assemblyai',
@@ -347,15 +275,46 @@ export const VOICE_GROUPS: VoiceGroup[] = [
       },
       {
         provider: 'assemblyai',
+        id: 'aai-nancy',
+        label: 'Nancy',
+        description: 'A middle-aged woman speaking British English with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
         id: 'aai-oriol',
         label: 'Oriol',
         description: 'A middle-aged man speaking Mexican Spanish at a fairly fast pace.',
       },
       {
         provider: 'assemblyai',
-        id: 'aai-antonioluis',
-        label: 'Antonio Luis',
-        description: 'A deep, low-pitched voice of a middle-aged man speaking Mexican Spanish.',
+        id: 'aai-peter',
+        label: 'Peter',
+        description: 'A middle-aged man with a soft-spoken delivery in American English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-sara',
+        label: 'Sara',
+        description: 'A young woman speaking American English with an even, steady intonation.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-steven',
+        label: 'Steven',
+        description: 'A middle-aged man speaking Australian English with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-titus',
+        label: 'Titus',
+        description: 'A young man with a deep, low-pitched voice speaking American English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-troy',
+        label: 'Troy',
+        description:
+          'A young man with a soft-spoken, deep, low-pitched voice and expressive intonation of Scottish English.',
       },
     ],
   },
