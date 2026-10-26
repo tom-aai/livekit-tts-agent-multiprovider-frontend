@@ -1,6 +1,6 @@
 // Voice catalog for the pre-call voice picker.
 //
-// The LiveKit Inference providers (Cartesia, Rime, Fish Audio, Inworld, Gradium) are
+// The LiveKit Inference providers (Cartesia, Rime, Fish Audio, Inworld, Gradium, SpaceXAI) are
 // reached through `inference.TTS` in the agent, so their `id` is the full LiveKit model
 // descriptor in "provider/model:voice" format (see https://docs.livekit.io/agents/models/tts/).
 // AssemblyAI voices are not available through LiveKit Inference, so they go through the
@@ -9,7 +9,14 @@
 // The agent receives the selection as JSON `{ provider, voice }` in its job metadata and
 // builds the matching TTS. See `src/agent.py` in the companion `livekit-tts-agent` project.
 
-export type VoiceProvider = 'cartesia' | 'rime' | 'fish' | 'inworld' | 'gradium' | 'assemblyai';
+export type VoiceProvider =
+  | 'cartesia'
+  | 'rime'
+  | 'fish'
+  | 'inworld'
+  | 'gradium'
+  | 'spacexai'
+  | 'assemblyai';
 
 export interface VoiceOption {
   /** Agent-facing value: a LiveKit model descriptor, or an AssemblyAI voice name. */
@@ -38,27 +45,48 @@ export const VOICE_GROUPS: VoiceGroup[] = [
     voices: [
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3.6:a167e0f3-df7e-4d52-a9c3-f949145efdab',
-        label: 'Blake',
-        description: 'Energetic American male',
+        id: 'cartesia/sonic-3.6:f6ff7c0c-e396-40a9-a70b-f7607edb6937',
+        label: 'Emma',
       },
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3.6:9626c31c-bec5-4cca-baa8-f8ba9e84c8bc',
-        label: 'Jacqueline',
-        description: 'Confident, young American female',
+        id: 'cartesia/sonic-3.6:30894953-bcce-41fe-892c-15ce19c843ff',
+        label: 'Parker',
+        description: 'Supportive, conversational American male',
       },
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3.6:f31cc6a7-c1e8-4764-980c-60a361443dd1',
-        label: 'Robyn',
-        description: 'Neutral, mature Australian female',
+        id: 'cartesia/sonic-3.6:db6b0ed5-d5d3-463d-ae85-518a07d3c2b4',
+        label: 'Skylar',
+        description: 'Friendly, conversational American female',
       },
       {
         provider: 'cartesia',
-        id: 'cartesia/sonic-3.6:5c5ad5e7-1020-476b-8b91-fdcbe9cc313c',
-        label: 'Daniela',
-        description: 'Calm, trusting Mexican female',
+        id: 'cartesia/sonic-3.6:47c38ca4-5f35-497b-b1a3-415245fb35e1',
+        label: 'Daniel',
+        description: 'Modern, instructional American male',
+      },
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3.6:ef191366-f52f-447a-a398-ed8c0f2943a1',
+        label: 'Archie',
+        description: 'Approachable, conversational British male',
+      },
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3.6:1463a4e1-56a1-4b41-b257-728d56e93605',
+        label: 'Hugo',
+      },
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3.6:dc30854e-e398-4579-9dc8-16f6cb2c19b9',
+        label: 'Victoria',
+      },
+      {
+        provider: 'cartesia',
+        id: 'cartesia/sonic-3.6:62ae83ad-4f6a-430b-af41-a9bede9286ca',
+        label: 'Gemma',
+        description: 'Decisive, professional British female',
       },
     ],
   },
@@ -131,27 +159,43 @@ export const VOICE_GROUPS: VoiceGroup[] = [
     voices: [
       {
         provider: 'inworld',
-        id: 'inworld/inworld-tts-2:Ashley',
-        label: 'Ashley',
-        description: 'Warm, natural American female',
+        id: 'inworld/inworld-tts-2:Alistair',
+        label: 'Alistair',
       },
       {
         provider: 'inworld',
-        id: 'inworld/inworld-tts-2:Edward',
-        label: 'Edward',
-        description: 'Fast-talking, emphatic American male',
+        id: 'inworld/inworld-tts-2:Clive',
+        label: 'Clive',
       },
       {
         provider: 'inworld',
-        id: 'inworld/inworld-tts-2:Olivia',
-        label: 'Olivia',
-        description: 'Upbeat, friendly British female',
+        id: 'inworld/inworld-tts-2:Maisie',
+        label: 'Maisie',
       },
       {
         provider: 'inworld',
-        id: 'inworld/inworld-tts-2:Diego',
-        label: 'Diego',
-        description: 'Soothing, gentle Mexican male',
+        id: 'inworld/inworld-tts-2:Penelope',
+        label: 'Penelope',
+      },
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Arthur',
+        label: 'Arthur',
+      },
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Jason',
+        label: 'Jason',
+      },
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Sarah',
+        label: 'Sarah',
+      },
+      {
+        provider: 'inworld',
+        id: 'inworld/inworld-tts-2:Zoe',
+        label: 'Zoe',
       },
     ],
   },
@@ -162,9 +206,39 @@ export const VOICE_GROUPS: VoiceGroup[] = [
     voices: [
       {
         provider: 'gradium',
+        id: 'gradium/default:GgfEkEJtxZR7gnpy',
+        label: 'Freya',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:CF0NgaMwHMMrHZn0',
+        label: 'Reuben',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:4rdlkbxRv4m3UQTW',
+        label: 'Tilly',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:dME3IWyZBvmh1n1q',
+        label: 'Toby',
+      },
+      {
+        provider: 'gradium',
         id: 'gradium/default:4SZHfMpw-p46Ywgs',
         label: 'Harper',
         description: 'Modern, confident and friendly American female',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:Bla6SbVMczYnOhfK',
+        label: 'Marlowe',
+      },
+      {
+        provider: 'gradium',
+        id: 'gradium/default:_6Aslh2DxfmnRLmP',
+        label: 'Russell',
       },
       {
         provider: 'gradium',
@@ -172,17 +246,48 @@ export const VOICE_GROUPS: VoiceGroup[] = [
         label: 'Sterling',
         description: 'Warm, energetic American male with theatrical flair',
       },
+    ],
+  },
+  {
+    provider: 'spacexai',
+    label: 'SpaceXAI',
+    model: 'tts-1',
+    voices: [
       {
-        provider: 'gradium',
-        id: 'gradium/default:YhIHaAfQ0cQPDV9R',
-        label: 'Solène',
-        description: 'Bright, warm and enthusiastic French female',
+        provider: 'spacexai',
+        id: 'xai/tts-1:eve',
+        label: 'Eve',
+        description: 'Energetic, upbeat',
       },
       {
-        provider: 'gradium',
-        id: 'gradium/default:aBNlTApBeOlVKa23',
-        label: 'Lorena',
-        description: 'Warm and lively young German female',
+        provider: 'spacexai',
+        id: 'xai/tts-1:leo',
+        label: 'Leo',
+        description: 'Authoritative, strong',
+      },
+      {
+        provider: 'spacexai',
+        id: 'xai/tts-1:altair',
+        label: 'Altair',
+        description: 'Elegant, refined',
+      },
+      {
+        provider: 'spacexai',
+        id: 'xai/tts-1:carina',
+        label: 'Carina',
+        description: 'Soft, empathetic',
+      },
+      {
+        provider: 'spacexai',
+        id: 'xai/tts-1:helix',
+        label: 'Helix',
+        description: 'Bold, dynamic',
+      },
+      {
+        provider: 'spacexai',
+        id: 'xai/tts-1:luna',
+        label: 'Luna',
+        description: 'Gentle, patient',
       },
     ],
   },
@@ -225,6 +330,11 @@ export const VOICE_GROUPS: VoiceGroup[] = [
       },
       {
         provider: 'assemblyai',
+        id: 'aai-eloy',
+        label: 'Eloy',
+      },
+      {
+        provider: 'assemblyai',
         id: 'aai-ernest',
         label: 'Ernest',
         description:
@@ -235,6 +345,11 @@ export const VOICE_GROUPS: VoiceGroup[] = [
         id: 'aai-ewald',
         label: 'Ewald',
         description: 'A middle-aged man speaking American English at a fairly fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-freida',
+        label: 'Freida',
       },
       {
         provider: 'assemblyai',
@@ -302,6 +417,11 @@ export const VOICE_GROUPS: VoiceGroup[] = [
         id: 'aai-steven',
         label: 'Steven',
         description: 'A middle-aged man speaking Australian English with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-tito',
+        label: 'Tito',
       },
       {
         provider: 'assemblyai',
