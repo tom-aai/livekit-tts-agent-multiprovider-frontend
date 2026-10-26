@@ -38,7 +38,7 @@ export interface VoiceGroup {
 }
 
 export const VOICE_GROUPS: VoiceGroup[] = [
-   {
+  {
     provider: 'assemblyai',
     label: 'AssemblyAI',
     // Multilingual voice library. These go through the local assemblyai_tts plugin, and the
@@ -126,7 +126,7 @@ export const VOICE_GROUPS: VoiceGroup[] = [
           'A young man with a soft-spoken, deep, low-pitched voice and expressive intonation of Scottish English.',
       },
     ],
-  }, 
+  },
   {
     provider: 'cartesia',
     label: 'Cartesia',
