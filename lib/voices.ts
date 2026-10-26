@@ -38,6 +38,95 @@ export interface VoiceGroup {
 }
 
 export const VOICE_GROUPS: VoiceGroup[] = [
+   {
+    provider: 'assemblyai',
+    label: 'AssemblyAI',
+    // Multilingual voice library. These go through the local assemblyai_tts plugin, and the
+    // agent passes `id` straight through as the AssemblyAI voice_id, so each uses the "aai-" slug.
+    voices: [
+      {
+        provider: 'assemblyai',
+        id: 'aai-antonioluis',
+        label: 'Antonio Luis',
+        description: 'A deep, low-pitched voice of a middle-aged man speaking Mexican Spanish.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-audrey',
+        label: 'Audrey',
+        description: 'A middle-aged woman with an even, steady intonation speaks American English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-carrie',
+        label: 'Carrie',
+        description: 'A middle-aged woman with a soft-spoken delivery in British English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-eloy',
+        label: 'Eloy',
+        description: 'An older man with a deep, low-pitched voice speaking British English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-ernest',
+        label: 'Ernest',
+        description:
+          'A middle-aged man speaking fast-paced American English with a high-pitched voice.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-ewald',
+        label: 'Ewald',
+        description: 'A middle-aged man speaking American English at a fairly fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-freida',
+        label: 'Freida',
+        description:
+          'A middle-aged woman with expressive intonation, breathy and raspy texture in her British English speech.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-kyla',
+        label: 'Kyla',
+        description: 'A young woman speaking American English at a fast pace.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-magdalena',
+        label: 'Magdelena',
+        description: 'A young woman with a deep, low-pitched voice speaking German.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-malvina',
+        label: 'Malvina',
+        description: 'A soft-spoken middle-aged woman speaking Mexican Spanish.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-steven',
+        label: 'Steven',
+        description: 'A middle-aged man speaking Australian English with a fairly even tone.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-tito',
+        label: 'Tito',
+        description: 'A deep, low-pitched voice of a middle-aged man speaking British English.',
+      },
+      {
+        provider: 'assemblyai',
+        id: 'aai-troy',
+        label: 'Troy',
+        description:
+          'A young man with a soft-spoken, deep, low-pitched voice and expressive intonation of Scottish English.',
+      },
+    ],
+  }, 
   {
     provider: 'cartesia',
     label: 'Cartesia',
@@ -288,95 +377,6 @@ export const VOICE_GROUPS: VoiceGroup[] = [
         id: 'xai/tts-1:luna',
         label: 'Luna',
         description: 'Gentle, patient',
-      },
-    ],
-  },
-  {
-    provider: 'assemblyai',
-    label: 'AssemblyAI',
-    // Multilingual voice library. These go through the local assemblyai_tts plugin, and the
-    // agent passes `id` straight through as the AssemblyAI voice_id, so each uses the "aai-" slug.
-    voices: [
-      {
-        provider: 'assemblyai',
-        id: 'aai-antonioluis',
-        label: 'Antonio Luis',
-        description: 'A deep, low-pitched voice of a middle-aged man speaking Mexican Spanish.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-audrey',
-        label: 'Audrey',
-        description: 'A middle-aged woman with an even, steady intonation speaks American English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-carrie',
-        label: 'Carrie',
-        description: 'A middle-aged woman with a soft-spoken delivery in British English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-eloy',
-        label: 'Eloy',
-        description: 'An older man with a deep, low-pitched voice speaking British English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-ernest',
-        label: 'Ernest',
-        description:
-          'A middle-aged man speaking fast-paced American English with a high-pitched voice.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-ewald',
-        label: 'Ewald',
-        description: 'A middle-aged man speaking American English at a fairly fast pace.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-freida',
-        label: 'Freida',
-        description:
-          'A middle-aged woman with expressive intonation, breathy and raspy texture in her British English speech.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-kyla',
-        label: 'Kyla',
-        description: 'A young woman speaking American English at a fast pace.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-magdalena',
-        label: 'Magdelena',
-        description: 'A young woman with a deep, low-pitched voice speaking German.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-malvina',
-        label: 'Malvina',
-        description: 'A soft-spoken middle-aged woman speaking Mexican Spanish.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-steven',
-        label: 'Steven',
-        description: 'A middle-aged man speaking Australian English with a fairly even tone.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-tito',
-        label: 'Tito',
-        description: 'A deep, low-pitched voice of a middle-aged man speaking British English.',
-      },
-      {
-        provider: 'assemblyai',
-        id: 'aai-troy',
-        label: 'Troy',
-        description:
-          'A young man with a soft-spoken, deep, low-pitched voice and expressive intonation of Scottish English.',
       },
     ],
   },
