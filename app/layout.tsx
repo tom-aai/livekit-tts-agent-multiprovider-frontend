@@ -1,4 +1,4 @@
-import { Public_Sans } from 'next/font/google';
+import { Public_Sans, Source_Serif_4 } from 'next/font/google';
 import localFont from 'next/font/local';
 import { ThemeProvider } from '@/components/app/theme-provider';
 import { ThemeToggle } from '@/components/app/theme-toggle';
@@ -8,6 +8,13 @@ import '@/styles/globals.css';
 const publicSans = Public_Sans({
   variable: '--font-public-sans',
   subsets: ['latin'],
+});
+
+// Editorial serif for display headlines, per the AssemblyAI design system.
+const sourceSerif = Source_Serif_4({
+  variable: '--font-source-serif',
+  subsets: ['latin'],
+  weight: ['400'],
 });
 
 const commitMono = localFont({
@@ -49,13 +56,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
       className={cn(
         publicSans.variable,
         commitMono.variable,
+        sourceSerif.variable,
         'scroll-smooth font-sans antialiased'
       )}
     >
-      <head>
-        <title>LiveKit Voice Agent</title>
-        <meta name="description" content="A voice agent built with LiveKit" />
-      </head>
       <body className="overflow-x-hidden">
         <ThemeProvider
           attribute="class"
@@ -67,29 +71,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://livekit.io"
+              href="https://www.assemblyai.com"
               className="scale-100 transition-transform duration-300 hover:scale-110"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/lk-logo.svg" alt="LiveKit Logo" className="block size-6 dark:hidden" />
+              <img
+                src="/assemblyai-logomark.svg"
+                alt="AssemblyAI"
+                className="block size-6 dark:hidden"
+              />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/lk-logo-dark.svg"
-                alt="LiveKit Logo"
+                src="/assemblyai-logomark-white.svg"
+                alt="AssemblyAI"
                 className="hidden size-6 dark:block"
               />
             </a>
-            <span className="text-foreground font-mono text-xs font-bold tracking-wider uppercase">
-              Built with{' '}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://docs.livekit.io/agents"
-                className="underline underline-offset-4"
-              >
-                LiveKit Agents
-              </a>
-            </span>
           </header>
 
           {children}

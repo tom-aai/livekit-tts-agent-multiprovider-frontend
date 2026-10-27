@@ -260,7 +260,7 @@ export function AgentSessionView_01({
         )}
         <div className="bg-background relative mx-auto max-w-2xl pb-3 md:pb-12">
           <AgentControlBar
-            variant="livekit"
+            variant="assemblyai"
             controls={controls}
             isChatOpen={isChatOpen}
             isConnected={session.isConnected}

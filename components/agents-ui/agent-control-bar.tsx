@@ -20,7 +20,7 @@ import {
 } from '@/hooks/agents-ui/use-agent-control-bar';
 import { cn } from '@/lib/shadcn/utils';
 
-const LK_TOGGLE_VARIANT_1 = [
+const AAI_TOGGLE_VARIANT_1 = [
   'data-[state=off]:bg-accent data-[state=off]:hover:bg-foreground/10',
   'data-[state=off]:[&_~_button]:bg-accent data-[state=off]:[&_~_button]:hover:bg-foreground/10',
   'data-[state=off]:border-border data-[state=off]:hover:border-foreground/12',
@@ -30,15 +30,15 @@ const LK_TOGGLE_VARIANT_1 = [
   'dark:data-[state=off]:[&_~_button]:bg-accent dark:data-[state=off]:[&_~_button]:hover:bg-foreground/10',
 ];
 
-const LK_TOGGLE_VARIANT_2 = [
+const AAI_TOGGLE_VARIANT_2 = [
   'data-[state=off]:bg-accent data-[state=off]:hover:bg-foreground/10',
   'data-[state=off]:border-border data-[state=off]:hover:border-foreground/12',
   'data-[state=off]:focus-visible:border-ring data-[state=off]:focus-visible:ring-foreground/12',
   'data-[state=off]:text-foreground data-[state=off]:hover:text-foreground data-[state=off]:focus:text-foreground',
-  'data-[state=on]:bg-blue-500/20 data-[state=on]:hover:bg-blue-500/30',
-  'data-[state=on]:border-blue-700/10 data-[state=on]:text-blue-700 data-[state=on]:ring-blue-700/30',
-  'data-[state=on]:focus-visible:border-blue-700/50',
-  'dark:data-[state=on]:bg-blue-500/20 dark:data-[state=on]:text-blue-300',
+  'data-[state=on]:bg-primary/20 data-[state=on]:hover:bg-primary/30',
+  'data-[state=on]:border-primary/10 data-[state=on]:text-primary data-[state=on]:ring-primary/30',
+  'data-[state=on]:focus-visible:border-primary/50',
+  'dark:data-[state=on]:bg-primary/20 dark:data-[state=on]:text-primary',
 ];
 
 const MOTION_PROPS: MotionProps = {
@@ -174,7 +174,7 @@ export interface AgentControlBarProps extends UseInputControlsProps {
    *
    * @default 'default'
    */
-  variant?: 'default' | 'outline' | 'livekit';
+  variant?: 'default' | 'outline' | 'assemblyai';
   /**
    * This takes an object with the following keys: `leave`, `microphone`, `screenShare`, `camera`,
    * `chat`. Each key maps to a boolean value that determines whether the control is displayed.
@@ -224,7 +224,7 @@ export interface AgentControlBarProps extends UseInputControlsProps {
  *
  * ```tsx
  * <AgentControlBar
- *   variant="livekit"
+ *   variant="assemblyai"
  *   isConnected={true}
  *   onDisconnect={() => handleDisconnect()}
  *   controls={{
@@ -289,7 +289,7 @@ export function AgentControlBar({
       aria-label="Voice assistant controls"
       className={cn(
         'bg-background border-input/50 dark:border-muted flex flex-col border p-3 drop-shadow-md/3',
-        variant === 'livekit' ? 'rounded-[31px]' : 'rounded-lg',
+        'rounded-lg',
         className
       )}
       {...props}
@@ -303,7 +303,7 @@ export function AgentControlBar({
         <AgentChatInput
           chatOpen={isChatOpen || isChatOpenUncontrolled}
           onSend={handleSendMessage}
-          className={cn(variant === 'livekit' && '[&_button]:rounded-full')}
+          className={cn(variant === 'assemblyai' && '[&_button]:rounded-md')}
         />
       </motion.div>
 
@@ -323,9 +323,9 @@ export function AgentControlBar({
               onActiveDeviceChange={handleAudioDeviceChange}
               onMediaDeviceError={handleMicrophoneDeviceSelectError}
               className={cn(
-                variant === 'livekit' && [
-                  LK_TOGGLE_VARIANT_1,
-                  'rounded-full [&_button:first-child]:rounded-l-full [&_button:last-child]:rounded-r-full',
+                variant === 'assemblyai' && [
+                  AAI_TOGGLE_VARIANT_1,
+                  'rounded-md [&_button:first-child]:rounded-l-md [&_button:last-child]:rounded-r-md',
                 ]
               )}
             />
@@ -345,9 +345,9 @@ export function AgentControlBar({
               onMediaDeviceError={handleCameraDeviceSelectError}
               onActiveDeviceChange={handleVideoDeviceChange}
               className={cn(
-                variant === 'livekit' && [
-                  LK_TOGGLE_VARIANT_1,
-                  'rounded-full [&_button:first-child]:rounded-l-full [&_button:last-child]:rounded-r-full',
+                variant === 'assemblyai' && [
+                  AAI_TOGGLE_VARIANT_1,
+                  'rounded-md [&_button:first-child]:rounded-l-md [&_button:last-child]:rounded-r-md',
                 ]
               )}
             />
@@ -362,7 +362,7 @@ export function AgentControlBar({
               pressed={screenShareToggle.enabled}
               disabled={screenShareToggle.pending}
               onPressedChange={screenShareToggle.toggle}
-              className={cn(variant === 'livekit' && [LK_TOGGLE_VARIANT_2, 'rounded-full'])}
+              className={cn(variant === 'assemblyai' && [AAI_TOGGLE_VARIANT_2, 'rounded-md'])}
             />
           )}
 
@@ -378,7 +378,7 @@ export function AgentControlBar({
               }}
               className={agentTrackToggleVariants({
                 variant: variant === 'outline' ? 'outline' : 'default',
-                className: cn(variant === 'livekit' && [LK_TOGGLE_VARIANT_2, 'rounded-full']),
+                className: cn(variant === 'assemblyai' && [AAI_TOGGLE_VARIANT_2, 'rounded-md']),
               })}
             >
               <MessageSquareTextIcon />
@@ -392,8 +392,8 @@ export function AgentControlBar({
             onClick={onDisconnect}
             disabled={!isConnected}
             className={cn(
-              variant === 'livekit' &&
-                'bg-destructive/10 dark:bg-destructive/10 text-destructive hover:bg-destructive/20 dark:hover:bg-destructive/20 focus:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/4 rounded-full font-mono text-xs font-bold tracking-wider'
+              variant === 'assemblyai' &&
+                'bg-destructive/10 dark:bg-destructive/10 text-destructive hover:bg-destructive/20 dark:hover:bg-destructive/20 focus:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/4 rounded-md font-mono text-xs font-bold tracking-wider'
             )}
           >
             <span className="hidden uppercase md:inline">End call</span>
