@@ -62,7 +62,6 @@ export const WelcomeView = ({
           {startButtonText}
         </Button>
       </section>
-
     </div>
   );
 };
