@@ -1,6 +1,4 @@
-import { VoiceSelector } from '@/components/app/voice-selector';
 import { Button } from '@/components/ui/button';
-import type { VoiceOption } from '@/lib/voices';
 
 function WelcomeImage() {
   return (
@@ -23,15 +21,11 @@ function WelcomeImage() {
 interface WelcomeViewProps {
   startButtonText: string;
   onStartCall: () => void;
-  selectedVoice: VoiceOption | null;
-  onVoiceChange: (voice: VoiceOption) => void;
 }
 
 export const WelcomeView = ({
   startButtonText,
   onStartCall,
-  selectedVoice,
-  onVoiceChange,
   ref,
 }: React.ComponentProps<'div'> & WelcomeViewProps) => {
   return (
@@ -44,20 +38,13 @@ export const WelcomeView = ({
         </h1>
 
         <p className="text-muted-foreground max-w-prose pt-3 text-sm leading-5">
-          Pick a voice to get started
+          Start a call to compare the transcripts side by side
         </p>
-
-        <VoiceSelector
-          selectedVoice={selectedVoice}
-          onVoiceChange={onVoiceChange}
-          className="mt-6 w-64"
-        />
 
         <Button
           size="lg"
           onClick={onStartCall}
-          disabled={!selectedVoice}
-          className="mt-3 w-64 rounded-sm font-mono text-xs font-bold tracking-wider uppercase"
+          className="mt-6 w-64 rounded-sm font-mono text-xs font-bold tracking-wider uppercase"
         >
           {startButtonText}
         </Button>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { TokenSource } from 'livekit-client';
 import { useSession } from '@livekit/components-react';
 import { WarningIcon } from '@phosphor-icons/react/dist/ssr';
@@ -10,7 +10,6 @@ import { ViewController } from '@/components/app/view-controller';
 import { Toaster } from '@/components/ui/sonner';
 import { useAgentErrors } from '@/hooks/useAgentErrors';
 import { useDebugMode } from '@/hooks/useDebug';
-import { type VoiceOption, voiceToAgentMetadata } from '@/lib/voices';
 
 const IN_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 
@@ -37,21 +36,7 @@ export function App({ tokenServerId, tokenEndpoint, agentName, isVideoInputSuppo
     [tokenServerId, tokenEndpoint]
   );
 
-  // The selected voice must be chosen before the call starts. It is passed to the agent as
-  // JSON job metadata, which `useSession` forwards to the token endpoint as the agent
-  // dispatch metadata. The agent reads it from `ctx.job.metadata` to build its TTS.
-  const [selectedVoice, setSelectedVoice] = useState<VoiceOption | null>(null);
-
-  const sessionOptions = useMemo(() => {
-    const options: { agentName?: string; agentMetadata?: string } = {};
-    if (agentName) {
-      options.agentName = agentName;
-    }
-    if (selectedVoice) {
-      options.agentMetadata = voiceToAgentMetadata(selectedVoice);
-    }
-    return Object.keys(options).length > 0 ? options : undefined;
-  }, [agentName, selectedVoice]);
+  const sessionOptions = useMemo(() => (agentName ? { agentName } : undefined), [agentName]);
 
   const session = useSession(tokenSource, sessionOptions);
 
@@ -59,11 +44,7 @@ export function App({ tokenServerId, tokenEndpoint, agentName, isVideoInputSuppo
     <AgentSessionProvider session={session}>
       <AppSetup />
       <main className="grid h-svh grid-cols-1 place-content-center">
-        <ViewController
-          isVideoInputSupported={isVideoInputSupported}
-          selectedVoice={selectedVoice}
-          onVoiceChange={setSelectedVoice}
-        />
+        <ViewController isVideoInputSupported={isVideoInputSupported} />
       </main>
       <StartAudioButton label="Start Audio" />
       <Toaster

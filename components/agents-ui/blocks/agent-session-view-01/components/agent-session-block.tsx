@@ -1,15 +1,24 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { AnimatePresence, type MotionProps, motion } from 'motion/react';
-import { useAgent, useSessionContext, useSessionMessages } from '@livekit/components-react';
-import { AgentChatTranscript } from '@/components/agents-ui/agent-chat-transcript';
+import {
+  useAgent,
+  useSessionContext,
+  useSessionMessages,
+  useTextStream,
+} from '@livekit/components-react';
 import {
   AgentControlBar,
   type AgentControlBarControls,
 } from '@/components/agents-ui/agent-control-bar';
 import { cn } from '@/lib/shadcn/utils';
+import { MetricsStrip } from './metrics-strip';
 import { TileLayout } from './tile-view';
+import { TranscriptPane, callerStreamsToMessages, mergeByTimestamp } from './transcript-pane';
+
+/** Topic the agent publishes the forked Universal 3.6 Pro caller transcript on (Phase 2). */
+const U3_6_PRO_TOPIC = 'lk.transcription.u3_6_pro';
 
 const BOTTOM_VIEW_MOTION_PROPS: MotionProps = {
   variants: {
@@ -180,8 +189,11 @@ export function AgentSessionView_01({
 }: React.ComponentProps<'section'> & AgentSessionView_01Props) {
   const session = useSessionContext();
   const { messages } = useSessionMessages(session);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  // The primary 3.7 STT and the agent's speech both ride the default path, so
+  // useSessionMessages already holds the full 3.7 pane: agent speech plus the
+  // caller's 3.7 transcript.
+  const { textStreams: u3_6_proStreams } = useTextStream(U3_6_PRO_TOPIC);
+  const [isChatOpen, setIsChatOpen] = useState(true);
   const { state: agentState } = useAgent();
 
   const controls: AgentControlBarControls = {
@@ -192,14 +204,13 @@ export function AgentSessionView_01({
     screenShare: supportsScreenShare,
   };
 
-  useEffect(() => {
-    const lastMessage = messages.at(-1);
-    const lastMessageIsLocal = lastMessage?.from?.isLocal === true;
-
-    if (scrollAreaRef.current && lastMessageIsLocal) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
-  }, [messages]);
+  // Agent speech is shared by both panes. The 3.6 pane pairs it with the forked
+  // caller transcript; the 3.7 pane is the full session message list as is.
+  const agentMessages = useMemo(() => messages.filter((m) => !m.from?.isLocal), [messages]);
+  const u3_6_proMessages = useMemo(
+    () => mergeByTimestamp(agentMessages, callerStreamsToMessages(u3_6_proStreams)),
+    [agentMessages, u3_6_proStreams]
+  );
 
   return (
     <section
@@ -208,18 +219,30 @@ export function AgentSessionView_01({
       {...props}
     >
       <Fade top className="absolute inset-x-4 top-0 z-10 h-40" />
-      {/* transcript */}
+      {/* transcripts: Universal 3.6 Pro (left) and 3.7 Realtime Agent (right) */}
       <AnimatePresence>
         {isChatOpen && (
           <motion.div
             {...CHAT_MOTION_PROPS}
             className="absolute inset-x-0 top-0 bottom-[135px] overflow-hidden md:bottom-[170px]"
           >
-            <AgentChatTranscript
-              agentState={agentState}
-              messages={messages}
-              className="mx-auto max-w-2xl **:data-[slot=message-scroller-content]:p-4 **:data-[slot=message-scroller-content]:pt-40! md:**:data-[slot=message-scroller-content]:p-6"
-            />
+            <div className="mx-auto flex h-full max-w-5xl flex-col gap-2 px-2 pt-28 pb-2 md:gap-3 md:px-4 md:pt-32">
+              <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 md:grid-cols-2 md:gap-3">
+                <TranscriptPane
+                  title="Universal 3.6 Pro"
+                  subtitle="production"
+                  agentState={agentState}
+                  messages={u3_6_proMessages}
+                />
+                <TranscriptPane
+                  title="3.7 Realtime Agent"
+                  subtitle="preview"
+                  agentState={agentState}
+                  messages={messages}
+                />
+              </div>
+              <MetricsStrip />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
