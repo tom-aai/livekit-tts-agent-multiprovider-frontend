@@ -15,30 +15,56 @@ const SEGMENT_ID_ATTRIBUTE = 'lk.segment_id';
 
 /**
  * Turn the text streams from a forked STT topic into the message shape that
- * AgentChatTranscript renders. Each stream is one caller segment. Every message
- * is marked local, so the transcript aligns it on the caller's side, the same
- * as the primary STT's caller text.
+ * AgentChatTranscript renders. Every message is marked local, so the transcript
+ * aligns it on the caller's side, the same as the primary STT's caller text.
+ *
+ * The agent opens one stream per transcript update and shares a segment id across
+ * a turn's updates (interim then final), so a turn arrives as several streams with
+ * the same segment id and growing text. We keep the latest stream per segment, so
+ * each turn becomes one message that the final text settles on, rather than a
+ * stack of partials under a repeated key.
  */
 export function callerStreamsToMessages(streams: TextStreamData[]): ReceivedMessage[] {
-  return streams
-    .filter((stream) => stream.text.trim().length > 0)
-    .map((stream) => {
-      const segmentId = stream.streamInfo.attributes?.[SEGMENT_ID_ATTRIBUTE];
-      // AgentChatTranscript reads only id, timestamp, message and from.isLocal.
-      // We build that subset and cast, so we do not need a full Participant.
-      return {
-        id: segmentId ?? stream.streamInfo.id,
-        timestamp: stream.streamInfo.timestamp,
-        type: 'userTranscript',
-        message: stream.text,
-        from: { isLocal: true, identity: stream.participantInfo.identity },
-      } as unknown as ReceivedMessage;
-    });
+  const latestBySegment = new Map<string, TextStreamData>();
+  for (const stream of streams) {
+    if (stream.text.trim().length === 0) continue;
+    const segmentId = stream.streamInfo.attributes?.[SEGMENT_ID_ATTRIBUTE] ?? stream.streamInfo.id;
+    const existing = latestBySegment.get(segmentId);
+    if (!existing || stream.streamInfo.timestamp >= existing.streamInfo.timestamp) {
+      latestBySegment.set(segmentId, stream);
+    }
+  }
+
+  return [...latestBySegment.entries()].map(([segmentId, stream]) => {
+    // AgentChatTranscript reads only id, timestamp, message and from.isLocal.
+    // We build that subset and cast, so we do not need a full Participant.
+    return {
+      id: segmentId,
+      timestamp: stream.streamInfo.timestamp,
+      type: 'userTranscript',
+      message: stream.text,
+      from: { isLocal: true, identity: stream.participantInfo.identity },
+    } as unknown as ReceivedMessage;
+  });
 }
 
 /** Merge message lists and order them oldest first by timestamp. */
 export function mergeByTimestamp(...lists: ReceivedMessage[][]): ReceivedMessage[] {
   return lists.flat().sort((a, b) => a.timestamp - b.timestamp);
+}
+
+/**
+ * Keep only the most recent human turn and the most recent agent turn, in time
+ * order. Each pane then shows just the current exchange, so the two models line
+ * up on one turn at a time instead of a long scrolling history.
+ */
+export function lastExchange(messages: ReceivedMessage[]): ReceivedMessage[] {
+  const reversed = [...messages].reverse();
+  const lastHuman = reversed.find((m) => m.from?.isLocal);
+  const lastAgent = reversed.find((m) => !m.from?.isLocal);
+  return [lastHuman, lastAgent]
+    .filter((m): m is ReceivedMessage => m !== undefined)
+    .sort((a, b) => a.timestamp - b.timestamp);
 }
 
 interface TranscriptPaneProps {

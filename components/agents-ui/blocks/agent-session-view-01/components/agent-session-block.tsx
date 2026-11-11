@@ -14,11 +14,22 @@ import {
 } from '@/components/agents-ui/agent-control-bar';
 import { cn } from '@/lib/shadcn/utils';
 import { MetricsStrip } from './metrics-strip';
-import { TileLayout } from './tile-view';
-import { TranscriptPane, callerStreamsToMessages, mergeByTimestamp } from './transcript-pane';
+import {
+  TranscriptPane,
+  callerStreamsToMessages,
+  lastExchange,
+  mergeByTimestamp,
+} from './transcript-pane';
 
 /** Topic the agent publishes the forked Universal 3.6 Pro caller transcript on (Phase 2). */
 const U3_6_PRO_TOPIC = 'lk.transcription.u3_6_pro';
+/**
+ * Topic the agent republishes the primary 3.7 caller transcript on, grouped one
+ * segment per turn. The default `lk.transcription` path carries the same transcript,
+ * but it also forwards chunk-based preflight partials that make the pane flash and
+ * fragment, so the right pane reads this steady side topic instead.
+ */
+const U3_7_PREVIEW_TOPIC = 'lk.transcription.u3_7_preview';
 
 const BOTTOM_VIEW_MOTION_PROPS: MotionProps = {
   variants: {
@@ -109,107 +120,61 @@ export function Fade({ top = false, bottom = false, className }: FadeProps) {
 
 export interface AgentSessionView_01Props {
   /**
-   * Theme mode forwarded to the aura visualizer (`audioVisualizerType="aura"`) so
-   * the shader's blend mode adapts to the theme mode.
-   * Ignored by other visualizer types.
-   */
-  themeMode?: 'dark' | 'light';
-  /**
    * Message shown above the controls before the first chat message is sent.
    *
    * @default 'Agent is listening, ask it a question'
    */
   preConnectMessage?: string;
   /**
-   * Enables or disables the chat toggle and transcript input controls.
-   *
-   * @default true
-   */
-  supportsChatInput?: boolean;
-  /**
-   * Enables or disables camera controls in the bottom control bar.
-   *
-   * @default true
-   */
-  supportsVideoInput?: boolean;
-  /**
-   * Enables or disables screen sharing controls in the bottom control bar.
-   *
-   * @default true
-   */
-  supportsScreenShare?: boolean;
-  /**
    * Shows a pre-connect buffer state with a shimmer message before messages appear.
    *
    * @default true
    */
   isPreConnectBufferEnabled?: boolean;
-
-  /** Selects the visualizer style rendered in the main tile area. */
-  audioVisualizerType?: 'bar' | 'wave' | 'grid' | 'radial' | 'aura';
-  /** Primary hex color used by supported audio visualizer variants. */
-  audioVisualizerColor?: `#${string}`;
-  /** Hue shift intensity used by certain visualizers. */
-  audioVisualizerColorShift?: number;
-  /** Number of bars to render when `audioVisualizerType` is `bar`. */
-  audioVisualizerBarCount?: number;
-  /** Number of rows in the visualizer when `audioVisualizerType` is `grid`. */
-  audioVisualizerGridRowCount?: number;
-  /** Number of columns in the visualizer when `audioVisualizerType` is `grid`. */
-  audioVisualizerGridColumnCount?: number;
-  /** Number of radial bars when `audioVisualizerType` is `radial`. */
-  audioVisualizerRadialBarCount?: number;
-  /** Base radius of the radial visualizer when `audioVisualizerType` is `radial`. */
-  audioVisualizerRadialRadius?: number;
-  /** Stroke width of the wave path when `audioVisualizerType` is `wave`. */
-  audioVisualizerWaveLineWidth?: number;
   /** Optional class name merged onto the outer `<section>` container. */
   className?: string;
 }
 
 export function AgentSessionView_01({
   preConnectMessage = 'Agent is listening, ask it a question',
-  supportsChatInput = true,
-  supportsVideoInput = true,
-  supportsScreenShare = true,
   isPreConnectBufferEnabled = true,
-  audioVisualizerType,
-  audioVisualizerColor,
-  audioVisualizerColorShift,
-  audioVisualizerBarCount,
-  audioVisualizerGridRowCount,
-  audioVisualizerGridColumnCount,
-  audioVisualizerRadialBarCount,
-  audioVisualizerRadialRadius,
-  audioVisualizerWaveLineWidth,
-  themeMode,
   ref,
   className,
   ...props
 }: React.ComponentProps<'section'> & AgentSessionView_01Props) {
   const session = useSessionContext();
   const { messages } = useSessionMessages(session);
-  // The primary 3.7 STT and the agent's speech both ride the default path, so
-  // useSessionMessages already holds the full 3.7 pane: agent speech plus the
-  // caller's 3.7 transcript.
+  // Agent speech rides the default path, so useSessionMessages holds it (the
+  // non-local messages). Each pane pairs that shared agent speech with its own
+  // model's caller transcript, read from a side topic.
   const { textStreams: u3_6_proStreams } = useTextStream(U3_6_PRO_TOPIC);
+  const { textStreams: u3_7_previewStreams } = useTextStream(U3_7_PREVIEW_TOPIC);
   const [isChatOpen, setIsChatOpen] = useState(true);
   const { state: agentState } = useAgent();
 
+  // Voice-only UI: no camera, screen share, or transcript toggle button. The
+  // transcript panes stay open on their own, so the bar keeps just the mic and
+  // End call.
   const controls: AgentControlBarControls = {
     leave: true,
     microphone: true,
-    chat: supportsChatInput,
-    camera: supportsVideoInput,
-    screenShare: supportsScreenShare,
+    chat: false,
+    camera: false,
+    screenShare: false,
   };
 
-  // Agent speech is shared by both panes. The 3.6 pane pairs it with the forked
-  // caller transcript; the 3.7 pane is the full session message list as is.
+  // Agent speech is shared by both panes. Each pane pairs it with its own model's
+  // caller transcript, read from that model's side topic, then trims to the current
+  // exchange so both panes show the same one-turn window.
   const agentMessages = useMemo(() => messages.filter((m) => !m.from?.isLocal), [messages]);
   const u3_6_proMessages = useMemo(
-    () => mergeByTimestamp(agentMessages, callerStreamsToMessages(u3_6_proStreams)),
+    () => lastExchange(mergeByTimestamp(agentMessages, callerStreamsToMessages(u3_6_proStreams))),
     [agentMessages, u3_6_proStreams]
+  );
+  const u3_7_previewMessages = useMemo(
+    () =>
+      lastExchange(mergeByTimestamp(agentMessages, callerStreamsToMessages(u3_7_previewStreams))),
+    [agentMessages, u3_7_previewStreams]
   );
 
   return (
@@ -230,15 +195,15 @@ export function AgentSessionView_01({
               <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 md:grid-cols-2 md:gap-3">
                 <TranscriptPane
                   title="Universal 3.6 Pro"
-                  subtitle="production"
+                  subtitle="(agent doesn't see, just prints transcript)"
                   agentState={agentState}
                   messages={u3_6_proMessages}
                 />
                 <TranscriptPane
-                  title="3.7 Realtime Agent"
-                  subtitle="preview"
+                  title="AAI 3.7 Realtime Agent"
+                  subtitle="(sent to agent, used to drive conversation)"
                   agentState={agentState}
-                  messages={messages}
+                  messages={u3_7_previewMessages}
                 />
               </div>
               <MetricsStrip />
@@ -247,20 +212,6 @@ export function AgentSessionView_01({
         )}
       </AnimatePresence>
 
-      {/* Tile layout */}
-      <TileLayout
-        isChatOpen={isChatOpen}
-        themeMode={themeMode}
-        audioVisualizerType={audioVisualizerType}
-        audioVisualizerColor={audioVisualizerColor}
-        audioVisualizerColorShift={audioVisualizerColorShift}
-        audioVisualizerBarCount={audioVisualizerBarCount}
-        audioVisualizerRadialBarCount={audioVisualizerRadialBarCount}
-        audioVisualizerRadialRadius={audioVisualizerRadialRadius}
-        audioVisualizerGridRowCount={audioVisualizerGridRowCount}
-        audioVisualizerGridColumnCount={audioVisualizerGridColumnCount}
-        audioVisualizerWaveLineWidth={audioVisualizerWaveLineWidth}
-      />
       {/* Bottom */}
       <motion.div
         {...BOTTOM_VIEW_MOTION_PROPS}

@@ -1,6 +1,5 @@
 'use client';
 
-import { useTheme } from 'next-themes';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAgent, useSessionContext } from '@livekit/components-react';
 import { AgentSessionView_01 } from '@/components/agents-ui/blocks/agent-session-view-01';
@@ -27,14 +26,9 @@ const VIEW_MOTION_PROPS = {
   },
 };
 
-interface ViewControllerProps {
-  isVideoInputSupported: boolean;
-}
-
-export function ViewController({ isVideoInputSupported }: ViewControllerProps) {
+export function ViewController() {
   const { isConnected, start } = useSessionContext();
   const agent = useAgent();
-  const { resolvedTheme } = useTheme();
 
   return (
     <AnimatePresence mode="wait">
@@ -55,11 +49,7 @@ export function ViewController({ isVideoInputSupported }: ViewControllerProps) {
           preConnectMessage={
             agent.isConnected ? 'Agent is listening, ask it a question' : 'Waiting for agent'
           }
-          supportsChatInput={true}
-          supportsVideoInput={isVideoInputSupported}
-          supportsScreenShare={isVideoInputSupported}
           isPreConnectBufferEnabled={true}
-          themeMode={resolvedTheme === 'dark' ? 'dark' : 'light'}
           className="fixed inset-0"
         />
       )}
